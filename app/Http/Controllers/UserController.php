@@ -25,16 +25,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -42,7 +32,26 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name'=> 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required',
+        ]);
+
+        if($validator->fails()){
+
+            return response()->json([
+                'validation_err' => $validator->messages(),
+            ]);
+
+        } else {
+            User::create($request->all());
+            
+            return response()->json([
+                'status' => 200,
+                'message' => "User added successfully",
+            ]);
+        }
     }
 
     /**
