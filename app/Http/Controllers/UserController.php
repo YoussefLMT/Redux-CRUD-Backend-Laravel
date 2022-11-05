@@ -46,7 +46,7 @@ class UserController extends Controller
 
         } else {
             User::create($request->all());
-            
+
             return response()->json([
                 'status' => 200,
                 'message' => "User added successfully",
@@ -62,7 +62,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+
+        return response()->json([
+            'status' => 200,
+            'user' => $user,
+        ]);
     }
 
     /**
